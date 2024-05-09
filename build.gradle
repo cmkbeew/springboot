@@ -36,8 +36,30 @@ dependencies {
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.3.0'
+	
+	// Querydsl 설정
+	implementation 'jakarta.annotation:jakarta.annotation-api'
+	implementation 'com.querydsl:querydsl-jpa:5.1.0:jakarta'
+	annotationProcessor 'com.querydsl:querydsl-apt:5.1.0:jakarta'
+	annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
+	annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
+	// Querydsl 설정 끝
+
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+// Querydsl 설정
+sourceSets {
+	main {
+		java {
+			srcDirs = [
+			        "$projectDir/src/main/java", "$buildDir/generated/querydsl"
+			]
+		}
+	}
 }
