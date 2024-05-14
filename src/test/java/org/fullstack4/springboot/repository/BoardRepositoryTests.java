@@ -61,7 +61,8 @@ public class BoardRepositoryTests {
         int idx = 12;
 
         Optional<BoardEntity> result = boardRepository.findById(idx);
-        BoardEntity bbs = result.orElse(null);
+        BoardEntity bbs = result.orElse(null); // 없으면 null로 return 한다.
+
         // result.get(); // 값이 없으면 NoSuchElementException 발생
         // -> 다양한 예외처리 방법
 //        if(result.isPresent()) {
@@ -83,7 +84,7 @@ public class BoardRepositoryTests {
         log.info("==============================");
         log.info("Board Modify Test Start");
 
-        int idx = 1;
+        int idx = 2;
 
         Optional<BoardEntity> result = boardRepository.findById(idx);
         BoardEntity bbs = result.orElse(
@@ -100,8 +101,8 @@ public class BoardRepositoryTests {
         bbs = BoardEntity.builder()
                         .idx(idx)
                         .user_id("test")
-                        .title("제목 수정 1")
-                        .content("내용 수정 1")
+                        .title("제목 수정 2")
+                        .content("내용 수정 2")
                         .display_date(
                                 new SimpleDateFormat("yyyy-MM-dd").format(new Date()).toString()
                         )
@@ -128,12 +129,31 @@ public class BoardRepositoryTests {
         log.info("==============================");
         log.info("Board List Test Start");
 
-        PageRequest pageable = PageRequest.of(1, 10, Sort.by("idx").descending());
+        PageRequest pageable = PageRequest.of(0, 10, Sort.by("idx").descending());
 
-        Page<BoardEntity> page = boardRepository.search(pageable);
+//        Page<BoardEntity> page = boardRepository.search(pageable);
+        Page<BoardEntity> result = boardRepository.search(pageable);
+
+//        log.info("page :" + page);
+        log.info("result {} :" + result);
+        log.info("Board List Test End");
+        log.info("==============================");
+    }
+
+    @Test
+    public void testSearchList() {
+        log.info("==============================");
+        log.info("Board Searched List Test Start");
+
+        PageRequest pageable = PageRequest.of(0, 10, Sort.by("idx").descending());
+
+        String[] types = {"t", "c", "w"};
+        String search_word = "test";
+
+        Page<BoardEntity> page = boardRepository.search2(pageable, types, search_word);
 
         log.info("page :" + page);
-        log.info("Board List Test End");
+        log.info("Board Searched List Test End");
         log.info("==============================");
     }
 }
